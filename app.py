@@ -10,6 +10,7 @@ class ChatApp:
         self.root=root
         self.root.title("Sentinel cb_llama3.2:3B")
         self.root.geometry("1000x500,+800+250")
+        self.root.configure(bg_color="#000000",fg_color="#000000")
         # self.root.resizable(0,0)
         self.root.columnconfigure(1,weight=1)
         self.root.rowconfigure(0,weight=1)
@@ -17,13 +18,13 @@ class ChatApp:
         self.rowCounter=1
         self.buttonAvailabilityFlag=True
 
-        sidebarframe=ctk.CTkFrame(root,fg_color="#101010",border_color="#ff0000",border_width=1,width=200)
-        sidebarframe.grid(row=0,column=0,rowspan=2,sticky="nsew",padx=2,pady=0)
-        self.chatframe=ctk.CTkScrollableFrame(root,fg_color="#101010",border_color="#ff0000",border_width=1)
+        sidebarframe=ctk.CTkFrame(root,fg_color="#101010",border_color="#505050",border_width=1,width=200)
+        sidebarframe.grid(row=0,column=0,rowspan=2,sticky="nsew",padx=2,pady=2)
+        self.chatframe=ctk.CTkScrollableFrame(root,fg_color="#101010",border_color="#505050",border_width=1)
         self.chatframe.grid(row=0,column=1,sticky="nsew",padx=2,pady=2)
         self.chatframe.columnconfigure(0,weight=1)
         self.chatframe.rowconfigure(0,weight=1)
-        messageframe=ctk.CTkFrame(root,fg_color="#101010",border_color="cyan",border_width=1,height=50)
+        messageframe=ctk.CTkFrame(root,fg_color="#101010",border_width=0,height=50)
         messageframe.grid(row=1,column=1,sticky="nsew",padx=2,pady=2)
         messageframe.columnconfigure(0,weight=1)
         messageframe.rowconfigure(0,weight=1)
@@ -31,17 +32,17 @@ class ChatApp:
         # self.constructor_chatContainer("USER","").grid(row=self.rowCounter,column=0,sticky="nsew",padx=2,pady=2)
         # self.constructor_chatContainer("SYSTEM","SYSTEM ERROR! PLEASE TRY AGAIN.").grid(row=self.rowCounter,column=0,sticky="nsew",padx=2,pady=2)
 
-        textEntry=ctk.CTkEntry(messageframe,border_color="#ff0000",border_width=1)
+        textEntry=ctk.CTkEntry(messageframe,border_color="#505050",border_width=1,placeholder_text="Prompt...")
         textEntry.grid(row=0,column=0,sticky="nsew",padx=2,pady=2)
-        self.sendButton=ctk.CTkButton(messageframe,text="Send",border_color="#ff0000",border_width=1,command=lambda: self.getInput(str(textEntry.get())))
+        self.sendButton=ctk.CTkButton(messageframe,text="Send",hover_color="blue",border_color="blue",border_width=1,bg_color="transparent",fg_color="#101010",command=lambda: self.getInput(str(textEntry.get())))
         self.sendButton.grid(row=0,column=1,sticky="nsew",padx=2,pady=2)
 
 
     def constructor_chatContainer(self,caller,myText):
         self.rowCounter+=1
-        chatContainer=ctk.CTkFrame(self.chatframe,fg_color="#101010",border_color="blue",border_width=0,height=20)
+        chatContainer=ctk.CTkFrame(self.chatframe,fg_color="#101010",border_width=0)
         chatContainer.columnconfigure(1,weight=1)
-        chatCard=ctk.CTkFrame(chatContainer,fg_color="#101010",border_color="green",border_width=1,width=200)
+        chatCard=ctk.CTkFrame(chatContainer,fg_color="#202020",border_color="#505050",border_width=1,width=200)
         if caller=="MODEL":
             stickyPlace="nsw"
         elif caller=="USER":
@@ -60,10 +61,13 @@ class ChatApp:
         chatCard.rowconfigure(0,weight=1)
         
         thisText=ctk.CTkLabel(chatCard,text=myText,wraplength=300,justify="left")
-        thisText.grid(row=0,column=0,sticky="nsew",padx=2,pady=2,ipadx=8,ipady=8)
+        thisText.grid(row=0,column=0,sticky="nsew",padx=2,pady=2,ipadx=9,ipady=9)
         return chatContainer
 
     def getInput(self,message):
+        if message=="":
+            self.constructor_chatContainer("MODEL","?").grid(row=self.rowCounter,column=0,sticky="nsew",padx=2,pady=2)
+            return
         # self.buttonAvailabilityFlag=False
         # self.sendButton.configure(state="disabled")
         self.constructor_chatContainer("USER",message).grid(row=self.rowCounter,column=0,sticky="nsew",padx=2,pady=2)
