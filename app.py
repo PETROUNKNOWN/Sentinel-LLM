@@ -1,13 +1,21 @@
 import ollama
 import customtkinter as ctk
+import os
+from PIL import ImageTk
 
 
-# Initialize the OLLA client
 
+client = ollama.Client()
 
 class ChatApp:
     def __init__(self, root):
         self.root=root
+        # openstack_icon = self.root.iconbitmap('logo.ico')
+        self.iconpath = ImageTk.PhotoImage(file=os.path.join("R:/Github/chatBot/assets/logo.png"))
+        self.root.wm_iconbitmap()
+        self.root.iconphoto(False, self.iconpath)
+        # self.root.wm_iconbitmap("\logo.ico")
+        # self.root.after(201, lambda :root.iconbitmap('logo.ico'))
         self.root.title("Sentinel cb_llama3.2:3B")
         self.root.geometry("1000x500,+800+250")
         self.root.configure(bg_color="#000000",fg_color="#000000")
@@ -20,6 +28,14 @@ class ChatApp:
 
         sidebarframe=ctk.CTkFrame(root,fg_color="#101010",border_color="#505050",border_width=1,width=200)
         sidebarframe.grid(row=0,column=0,rowspan=2,sticky="nsew",padx=(10,5),pady=(10,10))
+        sidebarframe.columnconfigure(1,weight=1)
+
+        ctk.CTkLabel(sidebarframe, text="Model:", anchor="w").grid(row=0,column=0,sticky="w",padx=5,pady=5)
+        ctk.CTkOptionMenu(sidebarframe,dropdown_fg_color="#292929",dropdown_hover_color="#404040",fg_color="#292929",button_color="#404040",button_hover_color="#404040",values=["Sentinel"]).grid(row=0, column=2,sticky="e",padx=5,pady=5)
+
+        ctk.CTkLabel(sidebarframe, text="Creativity:", anchor="w").grid(row=1,column=0,sticky="w",padx=5,pady=5)
+        ctk.CTkOptionMenu(sidebarframe,dropdown_fg_color="#292929",dropdown_hover_color="#404040",fg_color="#292929",button_color="#404040",button_hover_color="#404040",values=["1","2","3","4","5","6","7"]).grid(row=1, column=2,sticky="e",padx=5,pady=5)
+
         self.chatframe=ctk.CTkScrollableFrame(root,fg_color="#101010",border_color="#505050",border_width=1)
         self.chatframe.grid(row=0,column=1,sticky="nsew",padx=(0,10),pady=(10,0))
         self.chatframe.columnconfigure(0,weight=1)
@@ -28,7 +44,7 @@ class ChatApp:
         messageframe.grid(row=1,column=1,sticky="nsew",padx=0,pady=0)
         messageframe.columnconfigure(0,weight=1)
         messageframe.rowconfigure(0,weight=1)
-        self.constructor_chatContainer("MODEL","Hello there. \nHow can be of assistance today?").grid(row=self.rowCounter,column=0,sticky="nsew",padx=2,pady=2)
+        self.constructor_chatContainer("MODEL","Hello there. \nHow can be of assistance today?").grid(row=self.rowCounter,column=0,sticky="nsew",padx=0,pady=0)
         # self.constructor_chatContainer("USER","").grid(row=self.rowCounter,column=0,sticky="nsew",padx=2,pady=2)
         # self.constructor_chatContainer("SYSTEM","SYSTEM ERROR! PLEASE TRY AGAIN.").grid(row=self.rowCounter,column=0,sticky="nsew",padx=2,pady=2)
 
@@ -56,7 +72,7 @@ class ChatApp:
 
         
         
-        chatCard.grid(row=1,column=1,sticky=stickyPlace,padx=2,pady=2)
+        chatCard.grid(row=1,column=1,sticky=stickyPlace,padx=5,pady=5)
         chatCard.columnconfigure(0,weight=1)
         chatCard.rowconfigure(0,weight=1)
         
@@ -74,11 +90,11 @@ class ChatApp:
         self.getResponse(message)
 
     def getResponse(self,message):
-        client = ollama.Client()
+        
 
-        # Set up the model and prompt
+        
         model = "Sentinel"
-        # prompt = "What is your name?"
+        
 
         # Generate an initial response from the model
         response = client.generate(model=model, prompt=message)
@@ -92,7 +108,7 @@ class ChatApp:
 
 
 if __name__ == "__main__":
-    ctk.set_appearance_mode("System")
+    ctk.set_appearance_mode("Dark")
     app_root=ctk.CTk()
     app=ChatApp(app_root)
     app_root.mainloop()
