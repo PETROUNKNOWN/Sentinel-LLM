@@ -12,7 +12,7 @@ A lightweight Python application hosting llama3.2 Large Language Model ran local
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/PETROUNKNOWN/chatBot.git
+   git clone https://github.com/PETROUNKNOWN/Sentinel-LLM.git
 
 2. Install the required libraries:
     ```bash
