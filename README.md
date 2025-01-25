@@ -56,7 +56,7 @@ A lightweight Python application hosting llama3.2 Large Language Model ran local
        ```
      - After the download:
        ```bash
-       cd chatBot
+       cd Sentinel-LLM
        ollama create sentinel -f ./Modelfile
        ```
     
