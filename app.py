@@ -48,26 +48,28 @@ class ChatApp:
         # self.constructor_chatContainer("USER","").grid(row=self.rowCounter,column=0,sticky="nsew",padx=2,pady=2)
         # self.constructor_chatContainer("SYSTEM","SYSTEM ERROR! PLEASE TRY AGAIN.").grid(row=self.rowCounter,column=0,sticky="nsew",padx=2,pady=2)
 
-        textEntry=ctk.CTkEntry(messageframe,border_color="#505050",border_width=1,placeholder_text="Prompt...",height=40)
-        textEntry.grid(row=0,column=0,sticky="nsew",padx=(10,5),pady=(5,10))
-        self.sendButton=ctk.CTkButton(messageframe,text="Send",hover_color="#101050",border_color="blue",border_width=1,bg_color="transparent",fg_color="#101010",command=lambda: self.getInput(str(textEntry.get())))
+        self.textEntry=ctk.CTkEntry(messageframe,border_color="#505050",border_width=1,placeholder_text="Prompt...",height=40)
+        self.textEntry.grid(row=0,column=0,sticky="nsew",padx=(10,5),pady=(5,10))
+        self.sendButton=ctk.CTkButton(messageframe,text="Send",hover_color="#101050",border_color="blue",border_width=1,bg_color="transparent",fg_color="#101010",command=lambda: self.getInput(str(self.textEntry.get())))
         self.sendButton.grid(row=0,column=1,sticky="nsew",padx=(0,10),pady=(5,10))
+        self.textEntry.bind('<Return>', lambda event: self.getInput(str(self.textEntry.get()))) #:)
 
 
     def constructor_chatContainer(self,caller,myText):
         self.rowCounter+=1
         chatContainer=ctk.CTkFrame(self.chatframe,fg_color="#202020",border_width=0)
         chatContainer.columnconfigure(1,weight=1)
-        chatCard=ctk.CTkFrame(chatContainer,fg_color="#101017",border_color="#505050",border_width=1,width=200)
+        chatCard=ctk.CTkFrame(chatContainer,fg_color="#101016",border_color="#505050",border_width=1,width=200)
         if caller=="MODEL":
             stickyPlace="nsw"
         elif caller=="USER":
             stickyPlace="nse"
         elif caller=="SYSTEM":
-            stickyPlace="ew"
+            stickyPlace="ns"
         else:
+            self.constructor_chatContainer("SYSTEM","SYSTEM ERROR! PLEASE TRY AGAIN.").grid(row=self.rowCounter,column=0,sticky="nsew",padx=2,pady=2)
             print("Error: Caller not specified.")
-            stickyPlace="nsew"
+            stickyPlace="ns"
 
 
         
@@ -81,6 +83,7 @@ class ChatApp:
         return chatContainer
 
     def getInput(self,message):
+        self.textEntry.delete(0,ctk.END) # Nice
         if message=="":
             self.constructor_chatContainer("MODEL","?").grid(row=self.rowCounter,column=0,sticky="nsew",padx=2,pady=2)
             return
