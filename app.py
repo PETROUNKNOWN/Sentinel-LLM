@@ -1,7 +1,7 @@
 import ollama
 import customtkinter as ctk
 import os
-from PIL import ImageTk
+from PIL import ImageTk, Image
 
 
 
@@ -11,7 +11,9 @@ class ChatApp:
     def __init__(self, root):
         self.root=root
         # openstack_icon = self.root.iconbitmap('logo.ico')
-        self.iconpath = ImageTk.PhotoImage(file=os.path.join("R:/Github/chatBot/assets/logo.png"))
+        image = Image.open("chatBot/assets/logo.png")
+        self.iconpath = ImageTk.PhotoImage(image)
+        
         self.root.wm_iconbitmap()
         self.root.iconphoto(False, self.iconpath)
         # self.root.wm_iconbitmap("\logo.ico")
